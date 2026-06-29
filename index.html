@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>ALSOL PRO - Almacén</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);transition:.3s;padding-bottom:70px}
+:root{--p:#8A6508;--p2:#C8960C;--bg:#f5f0e8;--text:#1a1a1a;--card:#fff;--shadow:0 2px 10px rgba(0,0,0,.08);--radius:12px;--border:#e0dcd5}
+.dark{--bg:#141309;--text:#e0dbd0;--card:#1C1B17;--border:#2D2B22;--shadow:0 2px 10px rgba(0,0,0,.4)}
+.header{background:linear-gradient(135deg,#8A6508,#C8960C);padding:12px 16px;position:sticky;top:0;z-index:10;color:#fff;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:20px;font-weight:900;letter-spacing:2px}
+.header .sub{font-size:9px;opacity:.8;letter-spacing:1px}
+.main{padding:12px 14px;max-width:480px;margin:0 auto}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;margin-bottom:10px;border:1px solid var(--border);transition:.2s}
+.card.clickable{cursor:pointer}
+.card.clickable:active{transform:scale(.98)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:50px;font-weight:600;font-size:13px;border:none;cursor:pointer;transition:.2s}
+.btn-p{background:#8A6508;color:#fff;box-shadow:0 2px 8px rgba(138,101,8,.3)}
+.btn-p:active{transform:scale(.95)}
+.btn-o{background:transparent;color:#8A6508;border:1.5px solid #8A6508}
+.btn-o:active{background:#8A650822}
+.btn-d{background:#c62828;color:#fff;box-shadow:0 2px 8px rgba(198,40,40,.3)}
+.btn-d:active{transform:scale(.95)}
+.btn-t{background:#FFE082;color:#2D1F00}
+.btn-s{padding:5px 12px;font-size:11px}
+.btn-f{width:100%;justify-content:center}
+.inp{width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid var(--border);font-size:14px;background:var(--bg);color:var(--text);margin-bottom:8px;transition:.2s}
+.inp:focus{border-color:#8A6508;outline:none;box-shadow:0 0 0 3px rgba(138,101,8,.15)}
+.lab{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;display:block}
+.badge{display:inline-block;padding:2px 10px;border-radius:50px;font-size:11px;font-weight:700}
+.badge-s{background:#e8f5e9;color:#2e7d32}
+.badge-e{background:#ffebee;color:#c62828}
+.badge-n{background:#eee;color:#555}
+.badge-i{background:#e3f2fd;color:#0d47a1}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.stat{padding:12px;border-radius:var(--radius);text-align:center;cursor:pointer;background:var(--card);border:1px solid var(--border);transition:.2s}
+.stat:active{transform:scale(.95)}
+.bar{background:var(--border);border-radius:4px;height:6px;overflow:hidden;margin:4px 0}
+.bar .f{height:100%;border-radius:4px;transition:width .5s}
+.f-g{background:#2e7d32}
+.f-y{background:#ed6c02}
+.f-r{background:#c62828}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);padding:10px 18px;border-radius:var(--radius);font-weight:700;font-size:13px;z-index:999;max-width:320px;width:90%;display:none;color:#fff;box-shadow:0 4px 20px rgba(0,0,0,.2)}
+.toast-s{background:#2e7d32;display:block}
+.toast-e{background:#c62828;display:block}
+.toast-w{background:#ed6c02;display:block}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--card);border-top:1px solid var(--border);display:flex;z-index:10}
+.nav button{flex:1;padding:6px 0;border:none;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0;border-top:3px solid transparent;font-size:9px;color:#888;transition:.2s}
+.nav button.a{border-top-color:#8A6508;color:#8A6508;font-weight:700}
+.nav button .i{font-size:18px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:none;align-items:flex-end;justify-content:center}
+.modal.show{display:flex}
+.modal-in{background:var(--card);border-radius:var(--radius) var(--radius) 0 0;width:100%;max-width:480px;padding:16px 14px 25px;max-height:80vh;overflow-y:auto}
+.mh{width:36px;height:4px;background:#ddd;border-radius:2px;margin:0 auto 12px}
+.flex{display:flex}
+.between{justify-content:space-between}
+.center{align-items:center}
+.gap-2{gap:6px}
+.gap-3{gap:10px}
+.w{width:100%}
+.mt-2{margin-top:6px}
+.mb-2{margin-bottom:6px}
+.tc{text-align:center}
+.relative{position:relative}
+.absolute{position:absolute}
+.overflow-auto{overflow:auto}
+.rounded{border-radius:8px}
+.shadow{box-shadow:var(--shadow)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div><h1>ALSOL</h1><div class="sub">SISTEMA DE ALMACÉN</div></div>
+  <div>
+    <button id="themeBtn" style="background:rgba(255,255,255,.2);border:none;border-radius:8px;padding:4px 10px;color:#fff;font-size:14px;cursor:pointer">🌙</button>
+    <button id="backupBtn" style="background:rgba(255,255,255,.2);border:none;border-radius:8px;padding:4px 10px;color:#fff;font-size:14px;cursor:pointer;margin-left:4px">💾</button>
+    <button id="searchBtn" style="background:rgba(255,255,255,.2);border:none;border-radius:8px;padding:4px 10px;color:#fff;font-size:14px;cursor:pointer;margin-left:4px">🔍</button>
+  </div>
+</div>
+
+<div class="main" id="app"></div>
+
+<div class="nav" id="nav">
+  <button class="a" data-tab="dashboard"><span class="i">🏠</span>Inicio</button>
+  <button data-tab="produccion"><span class="i">🧑‍💻</span>Prod</button>
+  <button data-tab="cisternas"><span class="i">🚛</span>Cisternas</button>
+  <button data-tab="ventas"><span class="i">💲</span>Ventas</button>
+  <button data-tab="stock"><span class="i">📦</span>Stock</button>
+  <button data-tab="reportes"><span class="i">📊</span>Reportes</button>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="modal" id="modal"><div class="modal-in" id="modalContent"></div></div>
+
+<script>
+// ============================================================
+//  ALSOL PRO - VERSIÓN FINAL
+//  TOTALES POR PRODUCTO EN PRODUCCIÓN (DETALLE)
+// ============================================================
+
+// ─── CONSTANTES ─────────────────────────────────────────────────────────
+const PRODUCTOS = [
+  {codigo:"1",nombre:"Lata 18L",pesoKg:16.40,icon:"🥫",color:"#E67E22",aceite:["mezcla"]},
+  {codigo:"2",nombre:"Balde 20L",pesoKg:18.43,icon:"🪣",color:"#2980B9",aceite:["soya"]},
+  {codigo:"3",nombre:"Balde 18L",pesoKg:16.43,icon:"🪣",color:"#1ABC9C",aceite:["soya"]},
+  {codigo:"4",nombre:"Galonera 5L",pesoKg:18.40,icon:"📦",color:"#8E44AD",aceite:["soya"]},
+  {codigo:"5",nombre:"Caja Litro",pesoKg:11.00,icon:"📦",color:"#C0392B",aceite:["soya"]}
+];
+
+const MESES = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+const TABS = ['dashboard','produccion','cisternas','ventas','stock','reportes'];
+let currentTab = 'dashboard';
+
+// ─── LOGO ──────────────────────────────────────────────────────────────
+const LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="60" viewBox="0 0 200 60">
+  <text x="10" y="48" font-family="Georgia,serif" font-size="48" font-weight="900" fill="#8A6508" letter-spacing="2">Alsol</text>
+</svg>`;
+const LOGO_B64 = "data:image/svg+xml;base64,"+btoa(LOGO_SVG);
+
+// ─── ESTADO ─────────────────────────────────────────────────────────────
+let data = {
+  cisternas: [],
+  produccion: [],
+  ventas: [],
+  mermas: [],
+  entradas: [],
+  historial: [],
+  stockP: {"1":0,"2":0,"3":0,"4":0,"5":0},
+  stockE: {"1":0,"2":0,"3":0,"4":0,"5":0}
+};
+
+// ─── HELPERS ────────────────────────────────────────────────────────────
+function ahora(){return new Date().toLocaleString("es-PE",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"})}
+function hoy(){return new Date().toLocaleDateString("es-PE",{day:"2-digit",month:"2-digit",year:"numeric"})}
+function mesDe(f){if(!f)return"";const p=f.split("/");return p.length>=3?p[1]+"/"+p[2].substring(0,4):""}
+function labelM(m){if(!m)return"";const p=m.split("/");return MESES[parseInt(p[0])-1]+" "+p[1]}
+function mesActual(){const d=new Date();return String(d.getMonth()+1).padStart(2,"0")+"/"+d.getFullYear()}
+function mesAnt(m){if(!m)return"";const p=m.split("/");let mo=parseInt(p[0])-1,yr=parseInt(p[1]);if(mo===0){mo=12;yr--;}return String(mo).padStart(2,"0")+"/"+yr}
+
+function calcKg(cid,prod){return prod.filter(p=>p.cisternaId===cid).reduce((a,p)=>a+Object.entries(p.unidades).reduce((b,[cod,cant])=>{const pr=PRODUCTOS.find(x=>x.codigo===cod);return b+(pr?pr.pesoKg*Number(cant):0)},0),0)}
+function calcMerma(cid,m){return(m||[]).filter(x=>x.cisternaId===cid).reduce((a,x)=>a+Number(x.kg),0)}
+
+function sugerencias(saldoKg, tipo){
+  const prods = PRODUCTOS.filter(p => p.aceite.includes(tipo));
+  const res = [];
+  prods.forEach(p => {
+    const c = Math.floor(saldoKg / p.pesoKg);
+    if (c > 0) {
+      res.push({
+        items: [{ ...p, cant: c }],
+        kgUsado: c * p.pesoKg
+      });
+    }
+  });
+  return res.sort((a, b) => b.kgUsado - a.kgUsado).slice(0, 5);
+}
+
+// ─── INDEXEDDB ──────────────────────────────────────────────────────────
+const DB_NAME = 'alsol_db_v4';
+const STORE_NAME = 'data';
+
+function openDB(){
+  return new Promise((res,rej)=>{
+    const req=indexedDB.open(DB_NAME,1);
+    req.onupgradeneeded=e=>{
+      const db=e.target.result;
+      if(!db.objectStoreNames.contains(STORE_NAME)){
+        db.createObjectStore(STORE_NAME);
+      }
+    };
+    req.onsuccess=e=>res(e.target.result);
+    req.onerror=e=>rej(e);
+  });
+}
+
+async function dbGet(key){
+  const db=await openDB();
+  return new Promise((res,rej)=>{
+    const tx=db.transaction(STORE_NAME,'readonly');
+    const req=tx.objectStore(STORE_NAME).get(key);
+    req.onsuccess=e=>res(e.target.result);
+    req.onerror=rej;
+  });
+}
+
+async function dbSet(key,val){
+  const db=await openDB();
+  return new Promise((res,rej)=>{
+    const tx=db.transaction(STORE_NAME,'readwrite');
+    const req=tx.objectStore(STORE_NAME).put(val,key);
+    req.onsuccess=res;
+    req.onerror=rej;
+  });
+}
+
+async function guardar(){
+  try{
+    await dbSet('alsol_data', data);
+  }catch(e){
+    try{localStorage.setItem('alsol_data',JSON.stringify(data));}catch(e2){}
+  }
+}
+
+async function cargar(){
+  try{
+    const d=await dbGet('alsol_data');
+    if(d){data={...data,...d};}
+  }catch(e){
+    try{
+      const fb=localStorage.getItem('alsol_data');
+      if(fb){data={...data,...JSON.parse(fb)};}
+    }catch(e2){}
+  }
+}
+
+// ─── TOAST ─────────────────────────────────────────────────────────────
+function toast(msg,tipo='s'){
+  const el=document.getElementById('toast');
+  el.textContent=msg;
+  el.className='toast toast-'+tipo;
+  clearTimeout(el._t);
+  el._t=setTimeout(()=>{el.className='toast'},3000);
+}
+
+// ─── MODAL ─────────────────────────────────────────────────────────────
+function openModal(html){document.getElementById('modalContent').innerHTML=html;document.getElementById('modal').classList.add('show');}
+function closeModal(){document.getElementById('modal').classList.remove('show');}
+
+// ─── RENDER ────────────────────────────────────────────────────────────
+function render(){
+  const app=document.getElementById('app');
+  switch(currentTab){
+    case 'dashboard': app.innerHTML=renderDashboard();break;
+    case 'cisternas': app.innerHTML=renderCisternas();break;
+    case 'produccion': app.innerHTML=renderProduccion();break;
+    case 'ventas': app.innerHTML=renderVentas();break;
+    case 'stock': app.innerHTML=renderStock();break;
+    case 'reportes': app.innerHTML=renderReportes();break;
+  }
+  document.querySelectorAll('.nav button').forEach(b=>{
+    b.classList.toggle('a',b.dataset.tab===currentTab);
+  });
+}
+
+// ============================================================
+//  PDF HELPERS
+// ============================================================
+function pdfHeader(titulo, subtitulo=''){
+  return `<html><head><title>${titulo}</title>
+  <style>
+    @page { size: A4; margin: 6mm; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; padding: 0; margin: 0; color: #1A1A1A; font-size: 11px; background: #fff; }
+    .header { display: flex; align-items: center; gap: 12px; border-bottom: 3px solid #8A6508; padding-bottom: 8px; margin-bottom: 10px; }
+    .header img { height: 32px; }
+    .header h1 { font-size: 15px; color: #8A6508; margin: 0; font-weight: 900; letter-spacing: 1px; }
+    .header .sub { font-size: 9px; color: #666; margin: 2px 0 0; }
+    .header .ruc { font-size: 8px; color: #999; }
+    h2 { font-size: 12px; color: #4D4639; margin: 10px 0 4px; border-left: 4px solid #8A6508; padding-left: 6px; }
+    table { width: 100%; border-collapse: collapse; margin: 4px 0; font-size: 9px; }
+    th { background: #8A6508; color: #fff; padding: 3px 5px; text-align: center; font-weight: 700; }
+    td { padding: 3px 5px; border: 1px solid #ddd; text-align: center; }
+    .tc { text-align: center; }
+    .total-row { background: #f5f0e8; font-weight: 700; }
+    .foot { color: #999; font-size: 8px; margin-top: 10px; border-top: 1px solid #eee; padding-top: 4px; text-align: center; }
+    .resumen { display: flex; gap: 12px; flex-wrap: wrap; margin: 4px 0 8px; padding: 6px 10px; background: #f8f5f0; border-radius: 4px; border: 1px solid #e0dcd5; }
+    .resumen-item { font-size: 10px; }
+    .resumen-item b { color: #8A6508; }
+    .img-venta { max-width: 100%; max-height: 700px; border: 1px solid #ddd; border-radius: 4px; display: block; margin: 0 auto; }
+  </style>
+  </head><body>
+  <div class="header">
+    <img src="${LOGO_B64}" height="32" alt="ALSOL"/>
+    <div><h1>${titulo}</h1>${subtitulo ? `<div class="sub">${subtitulo}</div>` : ''}<div class="ruc">AGROINDUSTRIAS ICELS S.A.C. · RUC: 20334885560 · Ica, Perú</div></div>
+  </div>`;
+}
+
+function pdfFoot(){
+  return `<p class="foot">Reporte generado automáticamente el ${ahora()} · ALSOL ENVASADORA DE HUACHIPA</p></body></html>`;
+}
+
+function pdfOpen(html){
+  const w=window.open('','_blank');
+  w.document.write(html);
+  w.document.close();
+  w.focus();
+  w.print();
+}
+
+// ============================================================
+//  DASHBOARD
+// ============================================================
+function renderDashboard(){
+  const h=hoy();
+  const ph=data.produccion.filter(p=>p.fecha.startsWith(h));
+  const vh=(data.ventas||[]).filter(v=>v.fecha.startsWith(h));
+  const tp={},tv={};
+  ph.forEach(p=>Object.entries(p.unidades).forEach(([c,cant])=>{tp[c]=(tp[c]||0)+Number(cant)}));
+  vh.forEach(v=>{tv[v.producto]=(tv[v.producto]||0)+Number(v.cantidad)});
+  const alertas=Object.entries(data.stockE).filter(([,v])=>Number(v)<50);
+  const activas=data.cisternas.filter(c=>(c.estado||"en_proceso")==="en_proceso");
+
+  let html=`<div class="card" style="background:linear-gradient(135deg,#8A6508,#C8960C);color:#fff;border:none;padding:16px"><div style="font-size:11px;opacity:.9;font-weight:700">ALSOL</div><div style="font-size:24px;font-weight:900">${h}</div><div style="font-size:11px;opacity:.8">Turno 7:00-3:30</div></div>`;
+
+  if(alertas.length>0){
+    html+=`<div class="card" style="border-left:4px solid #c62828;background:#ffebee"><div style="font-weight:700;color:#c62828">⚠️ Stock bajo de envases</div>`;
+    alertas.forEach(([c,cant])=>{const p=PRODUCTOS.find(x=>x.codigo===c);html+=`<div>${p?.nombre}: <b>${cant}</b></div>`});
+    html+=`</div>`;
+  }
+
+  html+=`<div class="g2">`;
+  [
+    {label:"Activas",value:activas.length,icon:"🚛",color:"#1A6FAD",bg:"#E3F2FD"},
+    {label:"Prod hoy",value:Object.values(tp).reduce((a,b)=>a+b,0),icon:"🧑‍💻",color:"#2E7D32",bg:"#E8F5E9"},
+    {label:"Ventas hoy",value:Object.values(tv).reduce((a,b)=>a+b,0),icon:"💲",color:"#ED6C02",bg:"#FFF3E0"},
+    {label:"Alertas",value:alertas.length,icon:"⚠️",color:"#C62828",bg:"#FFEBEE"}
+  ].forEach(k=>{html+=`<div class="stat" style="background:${k.bg};border-color:${k.color}44" onclick="cambiarTab('${k.label==='Activas'?'cisternas':k.label==='Prod hoy'?'produccion':k.label==='Ventas hoy'?'ventas':'stock'}')"><div style="font-size:20px">${k.icon}</div><div style="font-size:24px;font-weight:900;color:${k.color}">${k.value}</div><div style="font-size:10px;color:${k.color};font-weight:700">${k.label}</div></div>`});
+  html+=`</div>`;
+
+  html+=`<div style="font-weight:800;font-size:16px;color:#8A6508;margin:12px 0 8px">📦 Stock</div>`;
+  PRODUCTOS.forEach(p=>{
+    const ll=data.stockP[p.codigo]||0,en=data.stockE[p.codigo]||0,bajo=en<50;
+    html+=`<div class="card clickable" onclick="cambiarTab('stock')" style="padding:10px 12px">
+      <div class="flex between center"><span style="font-size:20px">${p.icon}</span><span style="font-weight:700">${p.nombre}</span></div>
+      <div class="flex" style="gap:6px;margin-top:4px">
+        <div style="flex:1;background:#E8F5E9;border-radius:6px;padding:4px 8px;text-align:center"><div style="font-size:9px;color:#2E7D32;font-weight:700">LLENOS</div><div style="font-size:16px;font-weight:900;color:#2E7D32">${ll}</div></div>
+        <div style="flex:1;background:${bajo?'#FFEBEE':'var(--bg)'};border-radius:6px;padding:4px 8px;text-align:center;border:${bajo?'1px solid #c6282844':'none'}"><div style="font-size:9px;color:${bajo?'#C62828':'#666'};font-weight:700">ENVASES</div><div style="font-size:16px;font-weight:900;color:${bajo?'#C62828':'#1a1a1a'}">${en}</div></div>
+      </div>
+    </div>`;
+  });
+
+  html+=`<div style="font-weight:800;font-size:16px;color:#8A6508;margin:12px 0 8px">🚛 Cisternas activas</div>`;
+  if(activas.length===0) html+=`<div class="card"><div style="color:#999;text-align:center">No hay cisternas activas</div></div>`;
+  else activas.slice(-3).reverse().forEach(c=>{
+    const kgE=calcKg(c.id,data.produccion),kgI=(c.tons||30)*1000,kgM=calcMerma(c.id,data.mermas),kgS=Math.max(0,kgI-kgE-kgM);
+    const pct=kgI>0?((kgI-kgS)/kgI)*100:0;
+    const cls=pct>80?'f-r':pct>50?'f-y':'f-g';
+    html+=`<div class="card clickable" onclick="verCisterna('${c.id}')" style="padding:10px 12px">
+      <div class="flex between"><span style="font-weight:700">${c.tipoAceite==="soya"?"🌿 Soya":"🔀 Mezcla"}</span><span class="badge badge-s">🟢 Activa</span></div>
+      <div style="font-size:11px;color:#888">${c.id} · ${c.fecha}</div>
+      <div class="bar"><div class="f ${cls}" style="width:${pct}%"></div></div>
+      <div class="flex between" style="font-size:11px"><span>${(kgE/1000).toFixed(2)}t usadas</span><span style="font-weight:700;color:#2e7d32">Saldo: ${(kgS/1000).toFixed(2)}t</span></div>
+    </div>`;
+  });
+
+  return html;
+}
+
+// ============================================================
+//  CISTERNAS - COMPLETO
+// ============================================================
+let cisternaEditando=null;
+let cisternaFiltroMes='';
+let cisternaFiltroBus='';
+
+function renderCisternas(){
+  let html=`<div class="flex between center"><div style="font-weight:800;font-size:16px;color:#8A6508">🚛 Cisternas</div><div><button class="btn btn-o btn-s" onclick="pdfCisternasMes()">📄 Mes</button><button class="btn btn-o btn-s" onclick="pdfCisternasAnual()">📄 Año</button><button class="btn btn-p btn-s" onclick="nuevaCisterna()">+</button></div></div>`;
+  html+=`<div class="relative" style="margin-bottom:8px"><span class="absolute" style="left:10px;top:50%;transform:translateY(-50%)">🔍</span><input class="inp" style="padding-left:32px" placeholder="Buscar..." oninput="cisternaFiltroBus=this.value;render()" value="${cisternaFiltroBus}"></div>`;
+  html+=`<div class="flex between" style="margin-bottom:6px"><span style="font-size:11px;color:#888">Filtrar mes</span><select onchange="cisternaFiltroMes=this.value;render()" style="padding:4px 8px;border-radius:6px;border:1px solid var(--border);font-size:11px;background:var(--bg);color:var(--text)"><option value="">Todos</option>${[...new Set(data.cisternas.map(c=>mesDe(c.fecha)).filter(Boolean))].sort().map(m=>`<option value="${m}" ${cisternaFiltroMes===m?'selected':''}>${labelM(m)}</option>`).join('')}</select></div>`;
+
+  const filt=data.cisternas.filter(c=>{
+    const pm=!cisternaFiltroMes||mesDe(c.fecha)===cisternaFiltroMes;
+    const pb=!cisternaFiltroBus||c.id.toLowerCase().includes(cisternaFiltroBus.toLowerCase())||c.tipoAceite.includes(cisternaFiltroBus.toLowerCase());
+    return pm&&pb;
+  }).reverse();
+
+  if(filt.length===0) html+=`<div class="card"><div style="color:#999;text-align:center">Sin cisternas</div></div>`;
+  else filt.forEach(c=>{
+    const kgE=calcKg(c.id,data.produccion),kgI=(c.tons||30)*1000,kgM=calcMerma(c.id,data.mermas),kgS=Math.max(0,kgI-kgE-kgM);
+    const pct=kgI>0?((kgI-kgS)/kgI)*100:0;
+    const cls=pct>80?'f-r':pct>50?'f-y':'f-g';
+    const estado=c.estado||'en_proceso';
+    html+=`<div class="card clickable" onclick="verCisterna('${c.id}')" style="padding:10px 12px">
+      <div class="flex between"><span style="font-weight:700">${c.tipoAceite==="soya"?"🌿 Soya":"🔀 Mezcla"}</span><span class="badge ${estado==='cerrada'?'badge-n':'badge-s'}">${estado==='cerrada'?'⚫ Cerrada':'🟢 Activa'}</span></div>
+      <div style="font-size:11px;color:#888">${c.id} · ${c.fecha}</div>
+      <div class="bar"><div class="f ${cls}" style="width:${pct}%"></div></div>
+      <div class="flex between" style="font-size:11px"><span>${(kgE/1000).toFixed(2)}t usadas</span><span style="font-weight:700;color:#2e7d32">Saldo: ${(kgS/1000).toFixed(2)}t</span></div>
+      <div class="flex" style="gap:4px;margin-top:6px">
+        <button class="btn btn-o btn-s" onclick="event.stopPropagation();editarCisterna('${c.id}')">✏️</button>
+        <button class="btn btn-d btn-s" onclick="event.stopPropagation();eliminarCisterna('${c.id}')">🗑️</button>
+        <button class="btn btn-o btn-s" onclick="event.stopPropagation();pdfCisternaIndividual('${c.id}')">📄</button>
+      </div>
+    </div>`;
+  });
+
+  return html;
+}
+
+function pdfCisternaIndividual(id){
+  const c=data.cisternas.find(x=>x.id===id);
+  if(!c)return;
+  const kgE=calcKg(c.id,data.produccion),kgI=(c.tons||30)*1000,kgM=calcMerma(c.id,data.mermas),kgS=Math.max(0,kgI-kgE-kgM);
+  const prod=data.produccion.filter(p=>p.cisternaId===c.id);
+  const prods=PRODUCTOS.filter(p=>p.aceite.includes(c.tipoAceite));
+
+  let rows=prod.map(p=>{
+    return `<tr><td>${p.fecha}</td>${prods.map(pr=>`<td class="tc">${p.unidades[pr.codigo]||0}</td>`).join('')}</tr>`;
+  }).join('');
+
+  const totales={};
+  prod.forEach(p=>{Object.entries(p.unidades).forEach(([cod,cant])=>{totales[cod]=(totales[cod]||0)+Number(cant)})});
+  const totalRow=prods.length>0?`<tr class="total-row"><td><b>TOTAL</b></td>${prods.map(pr=>`<td class="tc"><b>${totales[pr.codigo]||0}</b></td>`).join('')}</tr>`:'';
+
+  const html=pdfHeader(`Cisterna ${c.id}`, `${c.tipoAceite==='soya'?'🌿 Soya':'🔀 Mezcla'} · ${c.fecha}`)+
+    `<div class="resumen">
+      <span class="resumen-item"><b>Inicial:</b> ${(kgI/1000).toFixed(2)} t</span>
+      <span class="resumen-item"><b>Envasado:</b> ${(kgE/1000).toFixed(2)} t</span>
+      <span class="resumen-item"><b>Saldo:</b> ${(kgS/1000).toFixed(2)} t</span>
+      ${kgM>0?`<span class="resumen-item" style="color:#c62828"><b>⚠️ Merma:</b> ${kgM.toFixed(1)} kg</span>`:''}
+      <span class="resumen-item"><b>Estado:</b> ${c.estado||'en_proceso'}</span>
+    </div>
+    <h2>Producción (${prod.length} registros)</h2>
+    <table><tr><th>Fecha</th>${prods.map(p=>`<th>${p.nombre}</th>`).join('')}</tr>${rows}${totalRow}</table>`+pdfFoot();
+  pdfOpen(html);
+}
+
+function pdfCisternasMes(){
+  const mes = cisternaFiltroMes || mesActual();
+  const filt = data.cisternas.filter(c => mesDe(c.fecha) === mes);
+  if(filt.length === 0){toast('No hay cisternas para este mes','w');return;}
+  
+  let rows = '';
+  let totalKgEnvasado = 0;
+  let totalesProductos = {};
+  PRODUCTOS.forEach(p => { totalesProductos[p.codigo] = 0 });
+  
+  filt.forEach(c => {
+    const kgE = calcKg(c.id, data.produccion);
+    totalKgEnvasado += kgE;
+    
+    const prod = data.produccion.filter(p => p.cisternaId === c.id);
+    const unidades = {};
+    PRODUCTOS.forEach(p => { unidades[p.codigo] = 0 });
+    prod.forEach(p => {
+      Object.entries(p.unidades).forEach(([cod, cant]) => {
+        unidades[cod] = (unidades[cod] || 0) + Number(cant);
+      });
+    });
+    PRODUCTOS.forEach(p => {
+      totalesProductos[p.codigo] += unidades[p.codigo] || 0;
+    });
+    
+    rows += `<tr>
+      <td>${c.fecha}</td>
+      <td>${c.tipoAceite}</td>
+      <td>${c.estado||'en_proceso'}</td>
+      <td class="tc">${(kgE/1000).toFixed(2)}</td>`;
+    PRODUCTOS.forEach(p => {
+      rows += `<td class="tc">${unidades[p.codigo] || 0}</td>`;
+    });
+    rows += `</tr>`;
+  });
+  
+  let totalRow = `<tr class="total-row">
+    <td colspan="3"><b>TOTALES</b></td>
+    <td class="tc"><b>${(totalKgEnvasado/1000).toFixed(2)}</b></td>`;
+  PRODUCTOS.forEach(p => {
+    totalRow += `<td class="tc"><b>${totalesProductos[p.codigo]}</b></td>`;
+  });
+  totalRow += `</tr>`;
+  
+  const html = pdfHeader(`Cisternas — ${labelM(mes)}`, `${filt.length} cisternas`)+
+    `<table>
+      <tr><th>Fecha</th><th>Tipo</th><th>Estado</th>
+      <th>Kg Env.</th>
+      ${PRODUCTOS.map(p=>`<th>${p.nombre}</th>`).join('')}</tr>
+      ${rows}
+      ${totalRow}
+    </table>`+pdfFoot();
+  pdfOpen(html);
+}
+
+function pdfCisternasAnual(){
+  const anio = new Date().getFullYear();
+  const meses = Array.from({length:12},(_,i)=>String(i+1).padStart(2,"0")+"/"+anio);
+  
+  let rows = '';
+  let totalGeneral = {};
+  PRODUCTOS.forEach(p=>{totalGeneral[p.codigo]=0});
+  let totalCisternas = 0;
+  let totalSoya = 0;
+  let totalMezcla = 0;
+  let totalKgEnvasado = 0;
+
+  meses.forEach(m => {
+    const cist = data.cisternas.filter(c => mesDe(c.fecha) === m);
+    if (cist.length === 0) {
+      rows += `<tr><td>${labelM(m)}</td><td class="tc">0</td><td class="tc">0</td><td class="tc">0</td>
+      <td class="tc">0</td>
+      ${PRODUCTOS.map(()=>`<td class="tc">0</td>`).join('')}</tr>`;
+      return;
+    }
+    const soya = cist.filter(c => c.tipoAceite === "soya").length;
+    const mezcla = cist.filter(c => c.tipoAceite === "mezcla").length;
+    const totales = {};
+    PRODUCTOS.forEach(p => { totales[p.codigo] = 0 });
+    let kgEnv = 0;
+    cist.forEach(c => {
+      const kgE = calcKg(c.id, data.produccion);
+      kgEnv += kgE;
+      data.produccion.filter(p => p.cisternaId === c.id).forEach(p => {
+        Object.entries(p.unidades).forEach(([cod, v]) => {
+          totales[cod] = (totales[cod] || 0) + Number(v);
+        });
+      });
+    });
+    PRODUCTOS.forEach(p => {
+      totalGeneral[p.codigo] += totales[p.codigo] || 0;
+    });
+    totalCisternas += cist.length;
+    totalSoya += soya;
+    totalMezcla += mezcla;
+    totalKgEnvasado += kgEnv;
+
+    rows += `<tr><td>${labelM(m)}</td><td class="tc">${cist.length}</td><td class="tc">${soya}</td><td class="tc">${mezcla}</td>
+      <td class="tc">${(kgEnv/1000).toFixed(2)}</td>`;
+    PRODUCTOS.forEach(p => {
+      rows += `<td class="tc">${totales[p.codigo] || 0}</td>`;
+    });
+    rows += `</tr>`;
+  });
+
+  let totalRow = `<tr class="total-row">
+    <td><b>TOTALES</b></td>
+    <td class="tc"><b>${totalCisternas}</b></td>
+    <td class="tc"><b>${totalSoya}</b></td>
+    <td class="tc"><b>${totalMezcla}</b></td>
+    <td class="tc"><b>${(totalKgEnvasado/1000).toFixed(2)}</b></td>`;
+  PRODUCTOS.forEach(p => {
+    totalRow += `<td class="tc"><b>${totalGeneral[p.codigo]}</b></td>`;
+  });
+  totalRow += `</tr>`;
+
+  const html = pdfHeader(`Cisternas Anual — ${anio}`, `Resumen por mes`)+
+    `<table>
+      <tr><th>Mes</th><th>Total</th><th>Soya</th><th>Mezcla</th>
+      <th>Kg Env.</th>
+      ${PRODUCTOS.map(p=>`<th>${p.nombre}</th>`).join('')}</tr>
+      ${rows}
+      ${totalRow}
+    </table>`+pdfFoot();
+  pdfOpen(html);
+}
+
+function nuevaCisterna(){
+  cisternaEditando=null;
+  openModal(`
+    <div class="mh"></div>
+    <div style="font-weight:800;font-size:16px;color:#8A6508;margin-bottom:12px">Nueva Cisterna</div>
+    <div><label class="lab">Fecha</label><input class="inp" id="fCisterna" value="${hoy()}"></div>
+    <div><label class="lab">Tipo</label><select class="inp" id="tCisterna"><option value="soya">🌿 Soya</option><option value="mezcla">🔀 Mezcla</option></select></div>
+    <div><label class="lab">Toneladas</label><input class="inp" id="tonsCisterna" type="number" value="30"></div>
+    <button class="btn btn-p btn-f" onclick="guardarCisterna()">💾 Guardar</button>
+    <button class="btn btn-o btn-f" onclick="closeModal()" style="margin-top:4px">Cancelar</button>
+  `);
+}
+
+function guardarCisterna(){
+  const fecha=document.getElementById('fCisterna').value;
+  const tipo=document.getElementById('tCisterna').value;
+  const tons=Number(document.getElementById('tonsCisterna').value)||30;
+  if(!fecha){toast('Ingresa fecha','e');return}
+  if(!tipo){toast('Selecciona tipo','e');return}
+  if(cisternaEditando){
+    const idx=data.cisternas.findIndex(c=>c.id===cisternaEditando);
+    if(idx!==-1){data.cisternas[idx]={...data.cisternas[idx],fecha,tipoAceite:tipo,tons};}
+    toast('Cisterna actualizada');
+  }else{
+    data.cisternas.push({id:'CIS-'+Date.now(),fecha,tipoAceite:tipo,tons,estado:'en_proceso'});
+    toast('Cisterna registrada');
+  }
+  guardar();closeModal();render();
+}
+
+function editarCisterna(id){
+  const c=data.cisternas.find(x=>x.id===id);
+  if(!c)return;
+  cisternaEditando=id;
+  openModal(`
+    <div class="mh"></div>
+    <div style="font-weight:800;font-size:16px;color:#8A6508;margin-bottom:12px">Editar Cisterna</div>
+    <div><label class="lab">Fecha</label><input class="inp" id="fCisterna" value="${c.fecha}"></div>
+    <div><label class="lab">Tipo</label><select class="inp" id="tCisterna"><option value="soya" ${c.tipoAceite==='soya'?'selected':''}>🌿 Soya</option><option value="mezcla" ${c.tipoAceite==='mezcla'?'selected':''}>🔀 Mezcla</option></select></div>
+    <div><label class="lab">Toneladas</label><input class="inp" id="tonsCisterna" type="number" value="${c.tons||30}"></div>
+    <div><label class="lab">Estado</label><select class="inp" id="eCisterna"><option value="en_proceso" ${c.estado==='en_proceso'?'selected':''}>🟢 En proceso</option><option value="cerrada" ${c.estado==='cerrada'?'selected':''}>⚫ Cerrada</option></select></div>
+    <button class="btn btn-p btn-f" onclick="guardarCisternaEdit()">💾 Guardar</button>
+    <button class="btn btn-o btn-f" onclick="closeModal()" style="margin-top:4px">Cancelar</button>
+  `);
+}
+function guardarCisternaEdit(){
+  const fecha=document.getElementById('fCisterna').value;
+  const tipo=document.getElementById('tCisterna').value;
+  const tons=Number(document.getElementById('tonsCisterna').value)||30;
+  const estado=document.getElementById('eCisterna').value;
+  if(!fecha){toast('Ingresa fecha','e');return}
+  const idx=data.cisternas.findIndex(c=>c.id===cisternaEditando);
+  if(idx!==-1){data.cisternas[idx]={...data.cisternas[idx],fecha,tipoAceite:tipo,tons,estado};}
+  toast('Cisterna actualizada');
+  guardar();closeModal();render();
+}
+
+function verCisterna(id){
+  const c=data.cisternas.find(x=>x.id===id);
+  if(!c)return;
+  const kgE=calcKg(c.id,data.produccion),kgI=(c.tons||30)*1000,kgM=calcMerma(c.id,data.mermas),kgS=Math.max(0,kgI-kgE-kgM);
+  const prod=data.produccion.filter(p=>p.cisternaId===c.id);
+  const merm=(data.mermas||[]).filter(m=>m.cisternaId===c.id);
+  const sugs=sugerencias(kgS,c.tipoAceite);
+  let html=`<div class="mh"></div><div style="font-weight:800;font-size:16px;color:#8A6508;margin-bottom:8px">${c.tipoAceite==="soya"?"🌿":"🔀"} ${c.id}</div><div style="font-size:12px;color:#888;margin-bottom:8px">${c.fecha} · ${c.tipoAceite}</div>`;
+  html+=`<div class="g3"><div class="card" style="padding:6px;text-align:center;margin:0"><div style="font-size:9px;color:#888">Inicial</div><div style="font-weight:900">${(kgI/1000).toFixed(2)}t</div></div><div class="card" style="padding:6px;text-align:center;margin:0"><div style="font-size:9px;color:#888">Envasado</div><div style="font-weight:900;color:#8A6508">${(kgE/1000).toFixed(2)}t</div></div><div class="card" style="padding:6px;text-align:center;margin:0"><div style="font-size:9px;color:#888">Saldo</div><div style="font-weight:900;color:#2e7d32">${(kgS/1000).toFixed(2)}t</div></div></div>`;
+  if(kgM>0) html+=`<div style="font-size:12px;color:#c62828;font-weight:700;margin:4px 0">⚠️ Merma: ${kgM.toFixed(1)} kg</div>`;
+  if(sugs.length>0&&kgS>100){
+    html+=`<div style="font-weight:700;font-size:13px;margin:8px 0 4px">💡 Sugerencias</div>`;
+    sugs.slice(0,5).forEach(s=>{
+      html+=`<div class="card" style="padding:6px 10px;border-left:3px solid #8A6508;margin:4px 0">
+        <div style="font-weight:600;font-size:12px">${s.items.map(it=>it.icon+" "+it.cant+" "+it.nombre).join(" + ")}</div>
+        <div style="font-size:10px;color:#888">Usa ${s.kgUsado.toFixed(1)} kg · Sobran ${(kgS-s.kgUsado).toFixed(1)} kg</div>
+      </div>`;
+    });
+  }
+  html+=`<div style="font-weight:700;font-size:13px;margin:8px 0 4px">🫙 Producción (${prod.length})</div>`;
+  if(prod.length===0) html+=`<div style="color:#999;font-size:12px">Sin producción</div>`;
+  else prod.slice(-5).reverse().forEach(p=>{
+    html+=`<div class="card" style="padding:6px 10px;margin:4px 0"><div style="font-size:11px;font-weight:600">${p.fecha}</div><div class="flex" style="flex-wrap:wrap;gap:4px;margin-top:2px">`;
+    Object.entries(p.unidades).filter(([,v])=>Number(v)>0).forEach(([cod,cant])=>{const pr=PRODUCTOS.find(x=>x.codigo===cod);html+=`<span class="badge badge-s">${pr?.icon||''} ${pr?.nombre||cod}: ${cant}</span>`});
+    html+=`</div></div>`;
+  });
+  if(merm.length>0){
+    html+=`<div style="font-weight:700;font-size:13px;margin:8px 0 4px">⚠️ Mermas</div>`;
+    merm.slice(-3).reverse().forEach(m=>{html+=`<div class="card" style="padding:6px 10px;border-left:3px solid #c62828;margin:4px 0"><div style="font-weight:600;color:#c62828">${m.kg} kg</div><div style="font-size:10px;color:#888">${m.fecha} · ${m.motivo||'Sin motivo'}</div></div>`});
+  }
+  html+=`<button class="btn btn-o btn-f" onclick="closeModal()" style="margin-top:6px">Cerrar</button>`;
+  openModal(html);
+}
+
+function eliminarCisterna(id){
+  if(confirm('¿Eliminar cisterna? Esta acción no se puede deshacer.')){
+    data.cisternas=data.cisternas.filter(c=>c.id!==id);
+    guardar();render();toast('Cisterna eliminada','e');
+  }
+}
+
+// ============================================================
+//  PRODUCCIÓN - CORREGIDA (TOTALES POR PRODUCTO EN DETALLE)
+// ============================================================
+let prodEditando=null;
+let prodFiltroMes='';
+
+function renderProduccion(){
+  let html=`<div class="flex between center"><div style="font-weight:800;font-size:16px;color:#8A6508">🧑‍💻 Producción</div><div><button class="btn btn-o btn-s" onclick="pdfProduccionMes()">📄 Mes</button><button class="btn btn-o btn-s" onclick="pdfProduccionAnual()">📄 Año</button><button class="btn btn-p btn-s" onclick="nuevaProduccion()">+</button></div></div>`;
+  html+=`<div class="flex between" style="margin-bottom:6px"><span style="font-size:11px;color:#888">Filtrar mes</span><select onchange="prodFiltroMes=this.value;render()" style="padding:4px 8px;border-radius:6px;border:1px solid var(--border);font-size:11px;background:var(--bg);color:var(--text)"><option value="">Todos</option>${[...new Set(data.produccion.map(p=>mesDe(p.fecha)).filter(Boolean))].sort().map(m=>`<option value="${m}" ${prodFiltroMes===m?'selected':''}>${labelM(m)}</option>`).join('')}</select></div>`;
+
+  const filt=data.produccion.filter(r=>{
+    const pm=!prodFiltroMes||mesDe(r.fecha)===prodFiltroMes;
+    return pm;
+  }).reverse();
+
+  if(filt.length===0) html+=`<div class="card"><div style="color:#999;text-align:center">Sin registros</div></div>`;
+  else filt.forEach(r=>{
+    const cis=data.cisternas.find(c=>c.id===r.cisternaId);
+    html+=`<div class="card" style="padding:10px 12px">
+      <div class="flex between"><div><div style="font-weight:600">${r.fecha}</div><div style="font-size:11px;color:#888">🚛 ${r.cisternaId} · ${cis?cis.tipoAceite:'-'}</div></div>
+      <div class="flex" style="gap:4px"><button class="btn btn-o btn-s" onclick="editarProduccion('${r.id}')">✏️</button><button class="btn btn-d btn-s" onclick="eliminarProduccion('${r.id}')">🗑️</button></div></div>
+      <div class="flex" style="flex-wrap:wrap;gap:4px;margin-top:4px">${Object.entries(r.unidades).filter(([,v])=>Number(v)>0).map(([cod,cant])=>{const pr=PRODUCTOS.find(p=>p.codigo===cod);return`<span class="badge badge-s">${pr?.icon||''} ${pr?.nombre||cod}: ${cant}</span>`}).join('')}</div>
+    </div>`;
+  });
+
+  return html;
+}
+
+// ============================================================
+//  PDF PRODUCCIÓN MES - CORREGIDO (TOTALES POR PRODUCTO)
+// ============================================================
+function pdfProduccionMes(){
+  const mes=prodFiltroMes||mesActual();
+  const f=data.produccion.filter(p=>mesDe(p.fecha)===mes);
+  if(f.length===0){toast('No hay producción para este mes','w');return;}
+  
+  // Totales por producto
+  const tot={};
+  f.forEach(p=>Object.entries(p.unidades).forEach(([c,v])=>{tot[c]=(tot[c]||0)+Number(v)}));
+  
+  // Resumen (siempre se muestra igual)
+  let sumRows=PRODUCTOS.map(p=>`<tr><td>${p.nombre}</td><td class="tc">${tot[p.codigo]||0}</td></tr>`).join('');
+  
+  // Detalle
+  let detRows=f.slice().reverse().map(p=>`<tr><td>${p.fecha}</td><td>${p.cisternaId}</td>${PRODUCTOS.map(pr=>`<td class="tc">${p.unidades[pr.codigo]||0}</td>`).join('')}</tr>`).join('');
+  
+  // Fila de TOTALES POR PRODUCTO (no suma general)
+  let totalRow = `<tr class="total-row"><td colspan="2"><b>TOTALES</b></td>`;
+  PRODUCTOS.forEach(p => {
+    totalRow += `<td class="tc"><b>${tot[p.codigo] || 0}</b></td>`;
+  });
+  totalRow += `</tr>`;
+  
+  const html=pdfHeader(`Producción — ${labelM(mes)}`, `${f.length} registros`)+
+    `<h2>RESUMEN</h2><table><tr><th>Producto</th><th>Total</th></tr>${sumRows}</table>
+    <h2>DETALLE (${f.length} registros)</h2>
+    <table><tr><th>Fecha</th><th>Cisterna</th>${PRODUCTOS.map(p=>`<th>${p.nombre}</th>`).join('')}</tr>${detRows}${totalRow}</table>`+pdfFoot();
+  pdfOpen(html);
+}
+
+function pdfProduccionAnual(){
+  const anio=new Date().getFullYear();
+  const meses=Array.from({length:12},(_,i)=>String(i+1).padStart(2,"0")+"/"+anio);
+  let rows=meses.map(m=>{
+    const f=data.produccion.filter(p=>mesDe(p.fecha)===m);
+    if(f.length===0)return `<tr><td>${labelM(m)}</td>${PRODUCTOS.map(()=>`<td class="tc">0</td>`).join('')}</tr>`;
+    const tot={};f.forEach(p=>Object.entries(p.unidades).forEach(([c,v])=>{tot[c]=(tot[c]||0)+Number(v)}));
+    return `<tr><td>${labelM(m)}</td>${PRODUCTOS.map(p=>`<td class="tc">${tot[p.codigo]||0}</td>`).join('')}</tr>`;
+  }).join('');
+  const html=pdfHeader(`Producción Anual — ${anio}`)+
+    `<table><tr><th>Mes</th>${PRODUCTOS.map(p=>`<th>${p.nombre}</th>`).join('')}</tr>${rows}</table>`+pdfFoot();
+  pdfOpen(html);
+}
+
+function nuevaProduccion(){
+  prodEditando=null;
+  const opts=data.cisternas.filter(c=>(c.estado||'en_proceso')!=='cerrada').map(c=>({id:c.id,label:c.id+' · '+c.tipoAceite}));
+  let html=`<div class="mh"></div><div style="font-weight:800;font-size:16px;color:#8A6508;margin-bottom:12px">Nueva Producción</div>`;
+  html+=`<div><label class="lab">Cisterna</label><select class="inp" id="pCisterna" onchange="actualizarProductosProduccion()"><option value="">— Seleccionar —</option>${opts.map(o=>`<option value="${o.id}">${o.label}</option>`).join('')}</select></div>`;
+  html+=`<div><label class="lab">Fecha</label><input class="inp" id="pFecha" value="${ahora()}"></div>`;
+  html+=`<div id="productosProduccion" style="margin-top:6px"></div>`;
+  html+=`<button class="btn btn-p btn-f" onclick="guardarProduccion()">💾 Guardar</button>`;
+  html+=`<button class="btn btn-o btn-f" onclick="closeModal()" style="margin-top:4px">Cancelar</button>`;
+  openModal(html);
+  setTimeout(actualizarProductosProduccion, 100);
+}
+
+function actualizarProductosProduccion(){
+  const cid=document.getElementById('pCisterna').value;
+  const container=document.getElementById('productosProduccion');
+  if(!cid){container.innerHTML='<div style="color:#999;font-size:13px;text-align:center;padding:8px">Selecciona una cisterna</div>';return;}
+  const cis=data.cisternas.find(c=>c.id===cid);
+  if(!cis){container.innerHTML='<div style="color:#999;font-size:13px;text-align:center;padding:8px">Cisterna no encontrada</div>';return;}
+  const prods=PRODUCTOS.filter(p=>p.aceite.includes(cis.tipoAceite));
+  if(prods.length===0){container.innerHTML='<div style="color:#999;font-size:13px;text-align:center;padding:8px">No hay productos disponibles</div>';return;}
+  let html=`<div style="font-size:11px;font-weight:700;color:#888;margin:6px 0 4px">📦 Productos para ${cis.tipoAceite==='soya'?'🌿 Soya':'🔀 Mezcla'}</div>`;
+  prods.forEach(p=>{html+=`<div class="flex center" style="gap:8px;margin-bottom:4px"><span style="font-size:18px">${p.icon}</span><div style="flex:1"><div style="font-size:11px;font-weight:600">${p.nombre}</div><input class="inp" id="pu_${p.codigo}" type="number" min="0" placeholder="0" style="margin-bottom:0"></div></div>`});
+  container.innerHTML=html;
+}
+
+function guardarProduccion(){
+  const cid=document.getElementById('pCisterna').value;
+  const fecha=document.getElementById('pFecha').value||ahora();
+  if(!cid){toast('Selecciona cisterna','e');return}
+  const cis=data.cisternas.find(c=>c.id===cid);
+  if(!cis){toast('Cisterna no válida','e');return}
+  const prods=PRODUCTOS.filter(p=>p.aceite.includes(cis.tipoAceite));
+  const unidades={};
+  let hayDatos=false;
+  prods.forEach(p=>{
+    const val=document.getElementById('pu_'+p.codigo);
+    if(val){const num=Number(val.value);if(num>0){unidades[p.codigo]=num;hayDatos=true;}}
+  });
+  if(!hayDatos){toast('Ingresa al menos una unidad','e');return}
+  let ok=true;
+  Object.entries(unidades).forEach(([cod,cant])=>{
+    if((data.stockE[cod]||0)<cant){toast(`Stock insuficiente para ${PRODUCTOS.find(x=>x.codigo===cod)?.nombre}`,'e');ok=false;}
+  });
+  if(!ok)return;
+  if(prodEditando){
+    const ant=data.produccion.find(p=>p.id===prodEditando);
+    if(ant){Object.entries(ant.unidades).forEach(([c,v])=>{data.stockP[c]=Math.max(0,(data.stockP[c]||0)-Number(v));data.stockE[c]=(data.stockE[c]||0)+Number(v)});}
+    const idx=data.produccion.findIndex(p=>p.id===prodEditando);
+    if(idx!==-1){data.produccion[idx]={id:prodEditando,fecha,cisternaId:cid,unidades};}
+    toast('Producción actualizada');
+  }else{
+    data.produccion.push({id:'P'+Date.now(),fecha,cisternaId:cid,unidades});
+    toast('Producción registrada');
+  }
+  Object.entries(unidades).forEach(([c,v])=>{data.stockP[c]=(data.stockP[c]||0)+Number(v);data.stockE[c]=Math.max(0,(data.stockE[c]||0)-Number(v))});
+  guardar();closeModal();render();
+}
+
+function editarProduccion(id){
+  const r=data.produccion.find(x=>x.id===id);
+  if(!r)return;
+  prodEditando=id;
+  const opts=data.cisternas.filter(c=>(c.estado||'en_proceso')!=='cerrada').map(c=>({id:c.id,label:c.id+' · '+c.tipoAceite}));
+  let html=`<div class="mh"></div><div style="font-weight:800;font-size:16px;color:#8A6508;margin-bottom:12px">Editar Producción</div>`;
+  html+=`<div><label class="lab">Cisterna</label><select class="inp" id="pCisternaEdit" onchange="actualizarProductosProduccionEdit()">${opts.map(o=>`<option value="${o.id}" ${o.id===r.cisternaId?'selected':''}>${o.label}</option>`).join('')}</select></div>`;
+  html+=`<div><label class="lab">Fecha</label><input class="inp" id="pFechaEdit" value="${r.fecha}"></div>`;
+  html+=`<div id="productosProduccionEdit" style="margin-top:6px"></div>`;
+  html+=`<button class="btn btn-p btn-f" onclick="guardarProduccionEdit()">💾 Guardar</button>`;
+  html+=`<button class="btn btn-o btn-f" onclick="closeModal()" style="margin-top:4px">Cancelar</button>`;
+  openModal(html);
+  setTimeout(actualizarProductosProduccionEdit, 100);
+}
+
+function actualizarProductosProduccionEdit(){
+  const cid=document.getElementById('pCisternaEdit').value;
+  const container=document.getElementById('productosProduccionEdit');
+  if(!cid){container.innerHTML='<div style="color:#999;font-size:13px;text-align:center;padding:8px">Selecciona una cisterna</div>';return;}
+  const cis=data.cisternas.find(c=>c.id===cid);
+  if(!cis){container.innerHTML='<div style="color:#999;font-size:13px;text-align:center;padding:8px">Cisterna no encontrada</div>';return;}
+  const r=data.produccion.find(p=>p.id===prodEditando);
+  const prods=PRODUCTOS.filter(p=>p.aceite.includes(cis.tipoAceite));
+  if(prods.length===0){container.innerHTML='<div style="color:#999;font-size:13px;text-align:center;padding:8px">No hay productos disponibles</div>';return;}
+  let html=`<div style="font-size:11px;font-weight:700;color:#888;margin:6px 0 4px">📦 Productos para ${cis.tipoAceite==='soya'?'🌿 Soya':'🔀 Mezcla'}</div>`;
+  prods.forEach(p=>{
+    const val=(r&&r.unidades[p.codigo])?r.unidades[p.codigo]:0;
+    html+=`<div class="flex center" style="gap:8px;margin-bottom:4px"><span style="font-size:18px">${p.icon}</span><div style="flex:1"><div style="font-size:11px;font-weight:600">${p.nombre}</div><input class="inp" id="pu_${p.codigo}_edit" type="number" min="0" value="${val}" style="margin-bottom:0"></div></div>`;
+  });
+  container.innerHTML=html;
+}
+
+function guardarProduccionEdit(){
+  const cid=document.getElementById('pCisternaEdit').value;
+  const fecha=document.getElementById('pFechaEdit').value||ahora();
+  if(!cid){toast('Selecciona cisterna','e');return}
+  const cis=data.cisternas.find(c=>c.id===cid);
+  if(!cis){toast('Cisterna no válida','e');return}
+  const prods=PRODUCTOS.filter(p=>p.aceite.includes(cis.tipoAceite));
+  const unidades={};
+  let hayDatos=false;
+  prods.forEach(p=>{
+    const val=document.getElementById('pu_'+p.codigo+'_edit');
+    if(val){const num=Number(val.value);if(num>0){unidades[p.codigo]=num;hayDatos=true;}}
+  });
+  if(!hayDatos){toast('Ingresa al menos una unidad','e');return}
+  let ok=true;
+  const ant=data.produccion.find(p=>p.id===prodEditando);
+  if(ant){Object.entries(ant.unidades).forEach(([c,v])=>{data.stockP[c]=Math.max(0,(data.stockP[c]||0)-Number(v));data.stockE[c]=(data.stockE[c]||0)+Number(v)});}
+  Object.entries(unidades).forEach(([cod,cant])=>{
+    if((data.stockE[cod]||0)<cant){toast(`Stock insuficiente para ${PRODUCTOS.find(x=>x.codigo===cod)?.nombre}`,'e');ok=false;}
+  });
+  if(!ok){if(ant){Object.entries(ant.unidades).forEach(([c,v])=>{data.stockP[c]=(data.stockP[c]||0)+Number(v);data.stockE[c]=Math.max(0,(data.stockE[c]||0)-Number(v))});}return;}
+  const idx=data.produccion.findIndex(p=>p.id===prodEditando);
+  if(idx!==-1){data.produccion[idx]={id:prodEditando,fecha,cisternaId:cid,unidades};}
+  Object.entries(unidades).forEach(([c,v])=>{data.stockP[c]=(data.stockP[c]||0)+Number(v);data.stockE[c]=Math.max(0,(data.stockE[c]||0)-Number(v))});
+  toast('Producción actualizada');
+  guardar();closeModal();render();
+}
+
+function eliminarProduccion(id){
+  if(confirm('¿Eliminar producción? Se ajustará el stock')){
+    const ant=data.produccion.find(p=>p.id===id);
+    if(ant){Object.entries(ant.unidades).forEach(([c,v])=>{data.stockP[c]=Math.max(0,(data.stockP[c]||0)-Number(v));data.stockE[c]=(data.stockE[c]||0)+Number(v)});}
+    data.produccion=data.produccion.filter(p=>p.id!==id);
+    guardar();render();toast('Eliminada','e');
+  }
+}
+
+// ============================================================
+//  VENTAS (COMPLETO)
+// ============================================================
+let ventaEditando=null;
+let ventaFiltroMes='';
+let fotoVentaTemp='';
+
+function renderVentas(){
+  let html=`<div class="flex between center"><div style="font-weight:800;font-size:16px;color:#8A6508">💲 Ventas</div><div><button class="btn btn-o btn-s" onclick="pdfVentasMes()">📄 Mes</button><button class="btn btn-o btn-s" onclick="pdfVentasAnual()">📄 Año</button><button class="btn btn-p btn-s" onclick="nuevaVenta()">+</button></div></div>`;
+  html+=`<div class="flex between" style="margin-bottom:6px"><span style="font-size:11px;color:#888">Filtrar mes</span><select onchange="ventaFiltroMes=this.value;render()" style="padding:4px 8px;border-radius:6px;border:1px solid var(--border);font-size:11px;background:var(--bg);color:var(--text)"><option value="">Todos</option>${[...new Set((data.ventas||[]).map(v=>mesDe(v.fecha)).filter(Boolean))].sort().map(m=>`<option value="${m}" ${ventaFiltroMes===m?'selected':''}>${labelM(m)}</option>`).join('')}</select></div>`;
+
+  const filt=(data.ventas||[]).filter(v=>{
+    return !ventaFiltroMes||mesDe(v.fecha)===ventaFiltroMes;
+  }).reverse();
+
+  if(filt.length===0) html+=`<div class="card"><div style="color:#999;text-align:center">Sin ventas</div></div>`;
+  else filt.forEach(v=>{
+    const pr=PRODUCTOS.find(p=>p.codigo===v.producto);
+    html+=`<div class="card clickable" onclick="verVenta('${v.id}')" style="padding:10px 12px">
+      <div class="flex between"><div><div class="flex center" style="gap:4px"><span>${pr?.icon||''}</span><span style="font-weight:600">${pr?.nombre||v.producto}</span></div><div style="font-size:10px;color:#888">${v.fecha}</div><div style="font-size:12px">👤 ${v.cliente}</div>${v.foto?'<span class="badge badge-i" style="font-size:9px">📷 Foto</span>':''}</div>
+      <div style="text-align:right"><div style="font-weight:900;font-size:18px;color:#c62828">-${v.cantidad}</div>
+      <div class="flex" style="gap:4px;justify-content:flex-end"><button class="btn btn-o btn-s" onclick="event.stopPropagation();editarVenta('${v.id}')">✏️</button><button class="btn btn-d btn-s" onclick="event.stopPropagation();eliminarVenta('${v.id}')">🗑️</button></div></div></div>
+    </div>`;
+  });
+
+  return html;
+}
+
+function verVenta(id){
+  const v=data.ventas.find(x=>x.id===id);
+  if(!v){toast('Venta no encontrada','e');return;}
+  const pr=PRODUCTOS.find(p=>p.codigo===v.producto);
+  let html=`<div class="mh"></div><div style="font-weight:800;font-size:16px;color:#8A6508;margin-bottom:8px">Venta #${v.numero||'-'}</div>
+    <div style="font-size:12px;color:#888;margin-bottom:8px">${v.fecha}</div>
+    <div class="card" style="padding:10px;border-left:4px solid #c62828">
+      <div class="flex center" style="gap:10px"><span style="font-size:32px">${pr?.icon||'📦'}</span><div><div style="font-weight:700">${pr?.nombre||v.producto}</div><div style="font-size:22px;font-weight:900;color:#c62828">-${v.cantidad} unidades</div></div></div>
+      <div style="border-top:1px solid var(--border);padding-top:8px;margin-top:8px">👤 <b>Cliente:</b> ${v.cliente}</div>
+    </div>`;
+  if(v.foto){
+    html+=`<div style="margin:8px 0"><img src="${v.foto}" style="width:100%;border-radius:8px;max-height:250px;object-fit:contain;border:1px solid var(--border)"/></div>`;
+  }
+  html+=`<div class="flex" style="gap:6px;margin-top:6px">
+    <button class="btn btn-o btn-f" onclick="pdfVentaIndividual('${v.id}')">📄 PDF</button>
+    <button class="btn btn-o btn-f" onclick="closeModal()">Cerrar</button>
+  </div>`;
+  openModal(html);
+}
+
+function pdfVentaIndividual(id){
+  const v=data.ventas.find(x=>x.id===id);
+  if(!v){toast('Venta no encontrada','e');return;}
+  const pr=PRODUCTOS.find(p=>p.codigo===v.producto);
+  
+  let fotoHtml = v.foto ? `<div style="text-align:center; margin:4px 0;">
+    <img src="${v.foto}" style="max-width:100%; max-height:700px; border:1px solid #ddd; border-radius:4px; display:block; margin:0 auto;"/>
+  </div>` : '';
+  
+  const html=pdfHeader(`Venta #${v.numero||'-'}`, `Cliente: ${v.cliente}`)+
+    `<table style="font-size:10px; width:100%; border-collapse:collapse; margin:4px 0;">
+      <tr><th style="padding:3px 6px; background:#8A6508; color:#fff; text-align:left; width:30%;">Campo</th><th style="padding:3px 6px; background:#8A6508; color:#fff; text-align:left;">Valor</th></tr>
+      <tr><td style="padding:3px 6px; border:1px solid #ddd;">Fecha</td><td style="padding:3px 6px; border:1px solid #ddd;">${v.fecha}</td></tr>
+      <tr><td style="padding:3px 6px; border:1px solid #ddd;">Producto</td><td style="padding:3px 6px; border:1px solid #ddd;">${pr?pr.nombre:'-'}</td></tr>
+      <tr><td style="padding:3px 6px; border:1px solid #ddd;">Cantidad</td><td style="padding:3px 6px; border:1px solid #ddd;">${v.cantidad} unidades</td></tr>
+      <tr><td style="padding:3px 6px; border:1px solid #ddd;">Cliente</td><td style="padding:3px 6px; border:1px solid #ddd;">${v.cliente}</td></tr>
+    </table>
+    ${fotoHtml}`+pdfFoot();
+  pdfOpen(html);
+}
+
+function pdfVentasMes(){
+  const mes=ventaFiltroMes||mesActual();
+  const f=(data.ventas||[]).filter(v=>mesDe(v.fecha)===mes);
+  if(f.length===0){toast('No hay ventas para este mes','w');return;}
+  const tot={};f.forEach(v=>{tot[v.producto]=(tot[v.producto]||0)+Number(v.cantidad)});
+  let sumRows=PRODUCTOS.map(p=>`<tr><td>${p.nombre}</td><td class="tc">${tot[p.codigo]||0}</td></tr>`).join('');
+  let detRows=f.slice().reverse().map(v=>{const pr=PRODUCTOS.find(p=>p.codigo===v.producto);return`<tr><td>${v.numero||'-'}</td><td>${v.fecha}</td><td>${pr?pr.nombre:'-'}</td><td class="tc">${v.cantidad}</td><td>${v.cliente}</td></tr>`;}).join('');
+  const totalGeneral=Object.values(tot).reduce((a,b)=>a+b,0);
+  const totalRow=`<tr class="total-row"><td colspan="3"><b>TOTAL</b></td><td class="tc"><b>${totalGeneral}</b></td><td></td></tr>`;
+  const html=pdfHeader(`Ventas — ${labelM(mes)}`, `${f.length} ventas`)+
+    `<h2>RESUMEN</h2><table><tr><th>Producto</th><th>Total</th></tr>${sumRows}</table>
+    <h2>DETALLE (${f.length} ventas)</h2>
+    <table><tr><th>#</th><th>Fecha</th><th>Producto</th><th>Cantidad</th><th>Cliente</th></tr>${detRows}${totalRow}</table>`+pdfFoot();
+  pdfOpen(html);
+}
+
+function pdfVentasAnual(){
+  const anio=new Date().getFullYear();
+  const meses=Array.from({length:12},(_,i)=>String(i+1).padStart(2,"0")+"/"+anio);
+  const ventasPorMes={};
+  (data.ventas||[]).forEach(v=>{
+    const m=mesDe(v.fecha);
+    if(!m||!m.includes("/"+anio))return;
+    const key=m+"||"+v.cliente+"||"+v.producto;
+    ventasPorMes[key]=(ventasPorMes[key]||0)+Number(v.cantidad);
+  });
+  let rows=meses.map(m=>{
+    const entries=Object.entries(ventasPorMes).filter(([k])=>k.startsWith(m+"||"));
+    if(entries.length===0)return `<tr><td>${labelM(m)}</td><td colspan="3" style="text-align:center;color:#999">Sin ventas</td></tr>`;
+    return entries.map(([k,cant])=>{
+      const[,cliente,cod]=k.split("||");
+      const pr=PRODUCTOS.find(x=>x.codigo===cod);
+      return `<tr><td>${labelM(m)}</td><td>${cliente}</td><td>${pr?pr.nombre:'-'}</td><td class="tc">${cant}</td></tr>`;
+    }).join('');
+  }).join('');
+  const html=pdfHeader(`Ventas Anual — ${anio}`)+
+    `<table><tr><th>Mes</th><th>Cliente</th><th>Producto</th><th>Unidades</th></tr>${rows}</table>`+pdfFoot();
+  pdfOpen(html);
+}
+
+function nuevaVenta(){
+  ventaEditando=null;
+  fotoVentaTemp='';
+  let html=`<div class="mh"></div><div style="font-weight:800;font-size:16px;color:#8A6508;margin-bottom:12px">Nueva Venta</div>`;
+  html+=`<div><label class="lab">Producto</label><select class="inp" id="vProducto"><option value="">—</option>${PRODUCTOS.map(p=>`<option value="${p.codigo}">${p.icon} ${p.nombre} — Stock: ${data.stockP[p.codigo]||0}</option>`).join('')}</select></div>`;
+  html+=`<div><label class="lab">Cantidad</label><input class="inp" id="vCantidad" type="number" min="1" placeholder="Ej: 50"></div>`;
+  html+=`<div><label class="lab">Cliente</label><input class="inp" id="vCliente" placeholder="Nombre del cliente"></div>`;
+  html+=`<div style="margin-bottom:12px">
+    <div style="font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">📷 Foto de boleta (opcional)</div>
+    <div class="flex" style="gap:6px">
+      <button class="btn btn-t" onclick="document.getElementById('fotoCamara').click()" style="flex:1">📷 Cámara</button>
+      <button class="btn btn-t" onclick="document.getElementById('fotoArchivos').click()" style="flex:1">📁 Archivos</button>
+    </div>
+    <input type="file" id="fotoCamara" accept="image/*" capture="environment" style="display:none" onchange="cargarFotoVenta(this)"/>
+    <input type="file" id="fotoArchivos" accept="image/*" style="display:none" onchange="cargarFotoVenta(this)"/>
+    <div id="vistaFotoVenta" style="margin-top:6px"></div>
+  </div>`;
+  html+=`<button class="btn btn-p btn-f" onclick="guardarVenta()">💾 Guardar</button>`;
+  html+=`<button class="btn btn-o btn-f" onclick="closeModal()" style="margin-top:4px">Cancelar</button>`;
+  openModal(html);
+}
+
+function cargarFotoVenta(input){
+  const file=input.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    fotoVentaTemp=e.target.result;
+    document.getElementById('vistaFotoVenta').innerHTML=`
+      <div class="relative" style="width:100%">
+        <img src="${fotoVentaTemp}" style="width:100%;border-radius:8px;max-height:150px;object-fit:cover;border:1px solid var(--border)"/>
+        <button onclick="fotoVentaTemp='';document.getElementById('vistaFotoVenta').innerHTML=''" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.6);border:none;border-radius:50%;color:#fff;width:24px;height:24px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center">✕</button>
+      </div>
+    `;
+  };
+  reader.readAsDataURL(file);
+}
+
+function editarVenta(id){
+  const v=data.ventas.find(x=>x.id===id);
+  if(!v){toast('Venta no encontrada','e');return;}
+  ventaEditando=id;
+  fotoVentaTemp=v.foto||'';
+  let html=`<div class="mh"></div><div style="font-weight:800;font-size:16px;color:#8A6508;margin-bottom:12px">Editar Venta</div>`;
+  html+=`<div><label class="lab">Producto</label><select class="inp" id="vProducto">${PRODUCTOS.map(p=>`<option value="${p.codigo}" ${p.codigo===v.producto?'selected':''}>${p.icon} ${p.nombre} — Stock: ${data.stockP[p.codigo]||0}</option>`).join('')}</select></div>`;
+  html+=`<div><label class="lab">Cantidad</label><input class="inp" id="vCantidad" type="number" min="1" value="${v.cantidad}"></div>`;
+  html+=`<div><label class="lab">Cliente</label><input class="inp" id="vCliente" value="${v.cliente}"></div>`;
+  html+=`<div style="margin-bottom:12px">
+    <div style="font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">📷 Foto de boleta</div>
+    <div class="flex" style="gap:6px">
+      <button class="btn btn-t" onclick="document.getElementById('fotoCamaraEdit').click()" style="flex:1">📷 Cámara</button>
+      <button class="btn btn-t" onclick="document.getElementById('fotoArchivosEdit').click()" style="flex:1">📁 Archivos</button>
+    </div>
+    <input type="file" id="fotoCamaraEdit" accept="image/*" capture="environment" style="display:none" onchange="cargarFotoVentaEdit(this)"/>
+    <input type="file" id="fotoArchivosEdit" accept="image/*" style="display:none" onchange="cargarFotoVentaEdit(this)"/>
+    <div id="vistaFotoVentaEdit" style="margin-top:6px">${fotoVentaTemp?`<div class="relative" style="width:100%"><img src="${fotoVentaTemp}" style="width:100%;border-radius:8px;max-height:150px;object-fit:cover;border:1px solid var(--border)"/><button onclick="fotoVentaTemp='';document.getElementById('vistaFotoVentaEdit').innerHTML=''" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.6);border:none;border-radius:50%;color:#fff;width:24px;height:24px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center">✕</button></div>`:''}</div>
+  </div>`;
+  html+=`<button class="btn btn-p btn-f" onclick="guardarVenta()">💾 Guardar</button>`;
+  html+=`<button class="btn btn-o btn-f" onclick="closeModal()" style="margin-top:4px">Cancelar</button>`;
+  openModal(html);
+}
+
+function cargarFotoVentaEdit(input){
+  const file=input.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    fotoVentaTemp=e.target.result;
+    document.getElementById('vistaFotoVentaEdit').innerHTML=`
+      <div class="relative" style="width:100%">
+        <img src="${fotoVentaTemp}" style="width:100%;border-radius:8px;max-height:150px;object-fit:cover;border:1px solid var(--border)"/>
+        <button onclick="fotoVentaTemp='';document.getElementById('vistaFotoVentaEdit').innerHTML=''" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.6);border:none;border-radius:50%;color:#fff;width:24px;height:24px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center">✕</button>
+      </div>
+    `;
+  };
+  reader.readAsDataURL(file);
+}
+
+function guardarVenta(){
+  const producto=document.getElementById('vProducto').value;
+  const cantidad=Number(document.getElementById('vCantidad').value);
+  const cliente=document.getElementById('vCliente').value.trim();
+  if(!producto){toast('Selecciona producto','e');return}
+  if(!cantidad||cantidad<=0){toast('Cantidad válida','e');return}
+  if(!cliente){toast('Ingresa cliente','e');return}
+  if((data.stockP[producto]||0)<cantidad){toast('Stock insuficiente','e');return}
+  const foto=fotoVentaTemp||'';
+  if(ventaEditando){
+    const idx=data.ventas.findIndex(v=>v.id===ventaEditando);
+    if(idx===-1){toast('Venta no encontrada','e');return;}
+    const ant=data.ventas[idx];
+    data.stockP[ant.producto]=(data.stockP[ant.producto]||0)+Number(ant.cantidad);
+    data.stockP[producto]=(data.stockP[producto]||0)-cantidad;
+    data.ventas[idx]={...ant, producto, cantidad, cliente, foto};
+    toast('Venta actualizada');
+    ventaEditando=null;
+  }else{
+    data.stockP[producto]=(data.stockP[producto]||0)-cantidad;
+    data.ventas.push({id:'V'+Date.now(),numero:(data.ventas||[]).length+1,fecha:ahora(),producto,cantidad,cliente,foto});
+    toast('Venta registrada');
+  }
+  fotoVentaTemp='';
+  guardar();closeModal();render();
+}
+
+function eliminarVenta(id){
+  if(confirm('¿Eliminar venta? Se restaurará el stock')){
+    const ant=data.ventas.find(v=>v.id===id);
+    if(ant){data.stockP[ant.producto]=(data.stockP[ant.producto]||0)+Number(ant.cantidad);}
+    data.ventas=data.ventas.filter(v=>v.id!==id);
+    guardar();render();toast('Venta eliminada','e');
+  }
+}
+
+// ============================================================
+//  STOCK (COMPLETO)
+// ============================================================
+function renderStock(){
+  let html=`<div class="flex between center"><div style="font-weight:800;font-size:16px;color:#8A6508">📦 Stock</div><button class="btn btn-o btn-s" onclick="pdfStock()">📄 PDF</button></div>`;
+  html+=`<button class="btn btn-p btn-f" onclick="entradaEnvases()" style="margin-bottom:8px">📦 Entrada de envases</button>`;
+
+  html+=`<div class="flex between"><span style="font-weight:700;color:#8A6508">Llenos</span><button class="btn btn-o btn-s" onclick="corregirStock('llenos')">Corregir</button></div>`;
+  PRODUCTOS.forEach(p=>{
+    const ll=data.stockP[p.codigo]||0;
+    html+=`<div class="card clickable" onclick="verDetalleStock('${p.codigo}')" style="padding:8px 12px"><div class="flex between center"><span>${p.icon} ${p.nombre}</span><span style="font-weight:900;font-size:18px;color:#2e7d32">${ll}</span></div></div>`;
+  });
+
+  html+=`<div class="flex between" style="margin-top:10px"><span style="font-weight:700;color:#8A6508">Envases</span><button class="btn btn-o btn-s" onclick="corregirStock('envases')">Corregir</button></div>`;
+  PRODUCTOS.forEach(p=>{
+    const en=data.stockE[p.codigo]||0,bajo=en<50;
+    html+=`<div class="card clickable" onclick="verDetalleStock('${p.codigo}')" style="padding:8px 12px;border-left:${bajo?'4px solid #c62828':'none'}"><div class="flex between center"><span>${p.icon} ${p.nombre}${bajo?' <span style="font-size:10px;color:#c62828">⚠️</span>':''}</span><span style="font-weight:900;font-size:18px;color:${bajo?'#c62828':'#1a1a1a'}">${en}</span></div></div>`;
+  });
+
+  const hist=data.historial||[];
+  if(hist.length>0){
+    html+=`<div style="font-weight:700;font-size:13px;color:#8A6508;margin:12px 0 6px">📋 Últimas correcciones</div>`;
+    hist.slice(-3).reverse().forEach(h=>{html+=`<div class="card" style="padding:6px 10px;border-left:3px solid #ed6c02"><div style="font-size:12px;font-weight:600">${h.tipo==='llenos'?'Llenos':'Envases'} corregidos</div><div style="font-size:10px;color:#888">${h.fecha}</div></div>`});
+  }
+
+  return html;
+}
+
+function pdfStock(){
+  let rows=PRODUCTOS.map(p=>`<tr><td>${p.nombre}</td><td class="tc">${data.stockP[p.codigo]||0}</td><td class="tc">${data.stockE[p.codigo]||0}</td><td>${(data.stockE[p.codigo]||0)<50?'⚠️ Bajo':'✅ OK'}</td></tr>`).join('');
+  let eRows=(data.entradas||[]).slice(-10).reverse().map(e=>{const pr=PRODUCTOS.find(p=>p.codigo===e.codigo);return`<tr><td>${e.fecha}</td><td>${pr?pr.nombre:'-'}</td><td class="tc">+${e.cantidad}</td><td>${e.nota||'-'}</td></tr>`;}).join('')||'<tr><td colspan="4" style="text-align:center;color:#999">Sin entradas</td></tr>';
+  const html=pdfHeader(`Stock — ${hoy()}`)+
+    `<table><tr><th>Producto</th><th>Llenos</th><th>Envases</th><th>Estado</th></tr>${rows}</table>
+    <h2>Últimas entradas de envases</h2>
+    <table><tr><th>Fecha</th><th>Producto</th><th>Cantidad</th><th>Nota</th></tr>${eRows}</table>`+pdfFoot();
+  pdfOpen(html);
+}
+
+function entradaEnvases(){
+  let html=`<div class="mh"></div><div style="font-weight:800;font-size:16px;color:#8A6508;margin-bottom:12px">Entrada de envases</div>`;
+  html+=`<div><label class="lab">Envase</label><select class="inp" id="eEnvase">${PRODUCTOS.map(p=>`<option value="${p.codigo}">${p.icon} ${p.nombre} — Actual: ${data.stockE[p.codigo]||0}</option>`).join('')}</select></div>`;
+  html+=`<div><label class="lab">Cantidad</label><input class="inp" id="eCantidad" type="number" min="1" placeholder="500"></div>`;
+  html+=`<div><label class="lab">Nota</label><input class="inp" id="eNota" placeholder="Proveedor"></div>`;
+  html+=`<button class="btn btn-p btn-f" onclick="guardarEntrada()">💾 Registrar</button>`;
+  html+=`<button class="btn btn-o btn-f" onclick="closeModal()" style="margin-top:4px">Cancelar</button>`;
+  openModal(html);
+}
+
+function guardarEntrada(){
+  const codigo=document.getElementById('eEnvase').value;
+  const cantidad=Number(document.getElementById('eCantidad').value);
+  const nota=document.getElementById('eNota').value||'';
+  if(!codigo){toast('Selecciona envase','e');return}
+  if(!cantidad||cantidad<=0){toast('Cantidad válida','e');return}
+  data.stockE[codigo]=(data.stockE[codigo]||0)+cantidad;
+  data.entradas.push({id:'E'+Date.now(),fecha:ahora(),codigo,cantidad,nota});
+  toast(`+${cantidad} envases agregados`);
+  guardar();closeModal();render();
+}
+
+function corregirStock(tipo){
+  const esLlenos=tipo==='llenos';
+  let html=`<div class="mh"></div><div style="font-weight:800;font-size:16px;color:#8A6508;margin-bottom:12px">Corregir ${esLlenos?'Llenos':'Envases'}</div>`;
+  PRODUCTOS.forEach(p=>{
+    const val=esLlenos?(data.stockP[p.codigo]||0):(data.stockE[p.codigo]||0);
+    html+=`<div class="flex center" style="gap:6px;margin-bottom:4px"><span style="font-size:16px">${p.icon}</span><div style="flex:1"><div style="font-size:10px;font-weight:600">${p.nombre}</div><input class="inp" id="cs_${p.codigo}" type="number" min="0" value="${val}" style="margin-bottom:0"></div></div>`;
+  });
+  html+=`<button class="btn btn-p btn-f" onclick="guardarCorreccion('${tipo}')">💾 Guardar</button>`;
+  html+=`<button class="btn btn-o btn-f" onclick="closeModal()" style="margin-top:4px">Cancelar</button>`;
+  openModal(html);
+}
+
+function guardarCorreccion(tipo){
+  const esLlenos=tipo==='llenos';
+  const nv={};
+  PRODUCTOS.forEach(p=>{nv[p.codigo]=Number(document.getElementById('cs_'+p.codigo).value)||0});
+  if(esLlenos){data.stockP=nv}else{data.stockE=nv}
+  data.historial.push({id:'H'+Date.now(),fecha:ahora(),tipo});
+  toast('Stock corregido');
+  guardar();closeModal();render();
+}
+
+function verDetalleStock(codigo){
+  const p=PRODUCTOS.find(x=>x.codigo===codigo);
+  if(!p)return;
+  const ll=data.stockP[codigo]||0,en=data.stockE[codigo]||0,bajo=en<50;
+  let html=`<div class="mh"></div><div style="font-weight:800;font-size:18px;text-align:center">${p.icon} ${p.nombre}</div>`;
+  html+=`<div class="flex" style="gap:10px;justify-content:center;margin:8px 0">
+    <div style="background:#E8F5E9;border-radius:8px;padding:8px 16px;text-align:center"><div style="font-size:9px;color:#2e7d32">LLENOS</div><div style="font-size:22px;font-weight:900;color:#2e7d32">${ll}</div></div>
+    <div style="background:${bajo?'#FFEBEE':'var(--bg)'};border-radius:8px;padding:8px 16px;text-align:center;border:${bajo?'1px solid #c62828':'none'}"><div style="font-size:9px;color:${bajo?'#c62828':'#666'}">ENVASES</div><div style="font-size:22px;font-weight:900;color:${bajo?'#c62828':'#1a1a1a'}">${en}</div></div>
+  </div>`;
+  const pp=data.produccion.filter(pr=>Number(pr.unidades[codigo])>0);
+  if(pp.length>0){
+    html+=`<div style="font-weight:600;font-size:12px;margin:6px 0 2px">🫙 Producción (${pp.length})</div>`;
+    pp.slice(-3).reverse().forEach(pr=>{html+=`<div class="card" style="padding:4px 8px;font-size:11px;margin:2px 0">${pr.fecha} · +${pr.unidades[codigo]} und · ${pr.cisternaId}</div>`});
+  }
+  const vv=(data.ventas||[]).filter(v=>v.producto===codigo);
+  if(vv.length>0){
+    html+=`<div style="font-weight:600;font-size:12px;margin:6px 0 2px">💲 Ventas (${vv.length})</div>`;
+    vv.slice(-3).reverse().forEach(v=>{html+=`<div class="card" style="padding:4px 8px;font-size:11px;margin:2px 0">${v.fecha} · -${v.cantidad} und · ${v.cliente}</div>`});
+  }
+  html+=`<button class="btn btn-o btn-f" onclick="closeModal()" style="margin-top:6px">Cerrar</button>`;
+  openModal(html);
+}
+
+// ============================================================
+//  REPORTES (COMPLETO)
+// ============================================================
+function renderReportes(){
+  let html=`<div class="flex between center"><div style="font-weight:800;font-size:16px;color:#8A6508">📊 Reportes</div></div>`;
+  const mesesDisponibles=[...new Set([...data.produccion,...data.cisternas,...(data.ventas||[])].map(r=>mesDe(r.fecha)).filter(Boolean))].sort();
+  html+=`<div style="margin-bottom:12px"><select id="reporteMes" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid var(--border);font-size:14px;background:var(--bg);color:var(--text)"><option value="">Todos los meses</option>${mesesDisponibles.map(m=>`<option value="${m}">${labelM(m)}</option>`).join('')}</select></div>`;
+  html+=`<div class="g2"><button class="btn btn-p btn-f" onclick="pdfReporteMensual(document.getElementById('reporteMes').value)">📄 Reporte Mensual</button><button class="btn btn-p btn-f" onclick="pdfReporteAnual()">📄 Reporte Anual</button></div>`;
+  html+=`<div style="margin-top:12px;font-weight:600;font-size:13px;color:#8A6508">📋 Reportes rápidos</div>`;
+  html+=`<div class="g2" style="margin-top:6px"><button class="btn btn-o btn-f" onclick="pdfCisternasAnual()">🚛 Cisternas Año</button><button class="btn btn-o btn-f" onclick="pdfProduccionAnual()">🧑‍💻 Producción Año</button></div>`;
+  html+=`<div class="g2"><button class="btn btn-o btn-f" onclick="pdfVentasAnual()">💲 Ventas Año</button><button class="btn btn-o btn-f" onclick="pdfStock()">📦 Stock</button></div>`;
+  return html;
+}
+
+function pdfReporteMensual(mes){
+  if(!mes){toast('Selecciona un mes','w');return;}
+  const ma=mesAnt(mes);
+  const dm=getDM(mes),dma=getDM(ma);
+  let pRows=PRODUCTOS.map(p=>`<tr><td>${p.nombre}</td><td class="tc">${dm.tP[p.codigo]||0}</td><td class="tc">${dma.tP[p.codigo]||0}</td></tr>`).join('');
+  let vRows=PRODUCTOS.map(p=>`<tr><td>${p.nombre}</td><td class="tc">${dm.tV[p.codigo]||0}</td><td class="tc">${dma.tV[p.codigo]||0}</td></tr>`).join('');
+  const html=pdfHeader(`Reporte Mensual — ${labelM(mes)}`, `Comparativa con ${labelM(ma)||'mes anterior'}`)+
+    `<h2>PRODUCCIÓN</h2><table><tr><th>Producto</th><th>${labelM(mes)}</th><th>${labelM(ma)||'Anterior'}</th></tr>${pRows}</table>
+    <h2>VENTAS</h2><table><tr><th>Producto</th><th>${labelM(mes)}</th><th>${labelM(ma)||'Anterior'}</th></tr>${vRows}</table>`+pdfFoot();
+  pdfOpen(html);
+}
+
+function pdfReporteAnual(){
+  const anio=new Date().getFullYear();
+  const meses=Array.from({length:12},(_,i)=>String(i+1).padStart(2,"0")+"/"+anio);
+  let cRows=meses.map(m=>{
+    const d=getDM(m);
+    if(d.cisternas.length===0)return `<tr><td>${labelM(m)}</td><td class="tc">0</td><td class="tc">0</td><td class="tc">0</td></tr>`;
+    const soya=d.cisternas.filter(c=>c.tipoAceite==="soya").length;
+    const mezcla=d.cisternas.filter(c=>c.tipoAceite==="mezcla").length;
+    return `<tr><td>${labelM(m)}</td><td class="tc">${d.cisternas.length}</td><td class="tc">${soya}</td><td class="tc">${mezcla}</td></tr>`;
+  }).join('');
+  let pRows=meses.map(m=>{
+    const d=getDM(m);
+    const hayDatos=PRODUCTOS.some(p=>(d.tP[p.codigo]||0)>0);
+    if(!hayDatos)return `<tr><td>${labelM(m)}</td>${PRODUCTOS.map(()=>`<td class="tc">0</td>`).join('')}</tr>`;
+    return `<tr><td>${labelM(m)}</td>${PRODUCTOS.map(p=>`<td class="tc">${d.tP[p.codigo]||0}</td>`).join('')}</tr>`;
+  }).join('');
+  let vRows=meses.map(m=>{
+    const d=getDM(m);
+    const ventas=(data.ventas||[]).filter(v=>mesDe(v.fecha)===m);
+    if(ventas.length===0)return `<tr><td>${labelM(m)}</td><td colspan="3" style="text-align:center;color:#999">Sin ventas</td></tr>`;
+    return ventas.map(v=>{
+      const pr=PRODUCTOS.find(x=>x.codigo===v.producto);
+      return `<tr><td>${labelM(m)}</td><td>${v.cliente}</td><td>${pr?pr.nombre:'-'}</td><td class="tc">${v.cantidad}</td></tr>`;
+    }).join('');
+  }).join('');
+  const html=pdfHeader(`Reporte Anual — ${anio}`)+
+    `<h2>CISTERNAS POR MES</h2><table><tr><th>Mes</th><th>Total</th><th>Soya</th><th>Mezcla</th></tr>${cRows}</table>
+    <h2>PRODUCCIÓN POR MES</h2><table><tr><th>Mes</th>${PRODUCTOS.map(p=>`<th>${p.nombre}</th>`).join('')}</tr>${pRows}</table>
+    <h2>VENTAS POR MES</h2><table><tr><th>Mes</th><th>Cliente</th><th>Producto</th><th>Unidades</th></tr>${vRows}</table>`+pdfFoot();
+  pdfOpen(html);
+}
+
+function getDM(m){
+  const prod=data.produccion.filter(p=>mesDe(p.fecha)===m);
+  const ventas=(data.ventas||[]).filter(v=>mesDe(v.fecha)===m);
+  const cisternas=data.cisternas.filter(c=>mesDe(c.fecha)===m);
+  const tP={},tV={};
+  prod.forEach(p=>Object.entries(p.unidades).forEach(([c,v])=>{tP[c]=(tP[c]||0)+Number(v)}));
+  ventas.forEach(v=>{tV[v.producto]=(tV[v.producto]||0)+Number(v.cantidad)});
+  const tons=cisternas.reduce((a,c)=>a+calcKg(c.id,data.produccion),0)/1000;
+  return{prod,ventas,cisternas,tP,tV,tons};
+}
+
+// ============================================================
+//  BUSCADOR GLOBAL
+// ============================================================
+function abrirBuscador(){
+  let html=`<div class="mh"></div><div style="font-weight:800;font-size:16px;color:#8A6508;margin-bottom:12px">🔍 Buscar</div>`;
+  html+=`<input class="inp" id="searchInput" placeholder="Escribe para buscar..." oninput="buscarGlobal(this.value)" style="margin-bottom:8px">`;
+  html+=`<div id="searchResults"></div>`;
+  html+=`<button class="btn btn-o btn-f" onclick="closeModal()">Cerrar</button>`;
+  openModal(html);
+  setTimeout(()=>document.getElementById('searchInput').focus(),100);
+}
+
+function buscarGlobal(q){
+  const results=document.getElementById('searchResults');
+  if(q.trim().length<2){results.innerHTML='<div style="color:#999;font-size:13px;text-align:center;padding:10px">Escribe al menos 2 caracteres</div>';return}
+  const ql=q.toLowerCase();
+  let html='';
+  data.cisternas.filter(c=>c.id.toLowerCase().includes(ql)||c.tipoAceite.includes(ql)).forEach(c=>{html+=`<div class="card clickable" style="padding:8px 10px" onclick="closeModal();cambiarTab('cisternas');setTimeout(()=>verCisterna('${c.id}'),100)">🚛 ${c.id} · ${c.tipoAceite} · ${c.fecha}</div>`});
+  data.produccion.filter(p=>p.cisternaId.toLowerCase().includes(ql)||p.fecha.includes(ql)).forEach(p=>{html+=`<div class="card clickable" style="padding:8px 10px" onclick="closeModal();cambiarTab('produccion')">🫙 ${p.fecha} · ${p.cisternaId}</div>`});
+  (data.ventas||[]).filter(v=>v.cliente.toLowerCase().includes(ql)).forEach(v=>{html+=`<div class="card clickable" style="padding:8px 10px" onclick="closeModal();cambiarTab('ventas')">💰 ${v.cliente} · ${v.cantidad} und · ${v.fecha}</div>`});
+  if(!html) html='<div style="color:#999;font-size:13px;text-align:center;padding:10px">Sin resultados para "'+q+'"</div>';
+  results.innerHTML=html;
+}
+
+// ============================================================
+//  RESPALDO
+// ============================================================
+function abrirRespaldo(){
+  let html=`<div class="mh"></div><div style="font-weight:800;font-size:16px;color:#8A6508;margin-bottom:12px">📦 Respaldo</div>`;
+  html+=`<button class="btn btn-p btn-f" onclick="exportarRespaldo()" style="margin-bottom:6px">📤 Exportar respaldo</button>`;
+  html+=`<div style="font-size:12px;color:#888;margin:6px 0">O restaurar un respaldo anterior:</div>`;
+  html+=`<input type="file" id="restoreFile" accept=".json" style="margin:6px 0;width:100%" onchange="restaurarRespaldo(event)">`;
+  html+=`<button class="btn btn-o btn-f" onclick="closeModal()" style="margin-top:6px">Cerrar</button>`;
+  openModal(html);
+}
+
+function exportarRespaldo(){
+  const json=JSON.stringify(data,null,2);
+  const blob=new Blob([json],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='alsol_respaldo_'+hoy().replace(/\//g,'-')+'.json';a.click();
+  toast('Respaldo exportado');
+  closeModal();
+}
+
+function restaurarRespaldo(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const parsed=JSON.parse(ev.target.result);
+      if(!parsed.cisternas||!parsed.produccion){toast('Archivo inválido','e');return}
+      data={...data,...parsed};
+      guardar();render();closeModal();toast('Respaldo restaurado');
+    }catch{toast('Error al leer archivo','e')}
+  };
+  reader.readAsText(file);
+}
+
+// ============================================================
+//  NAVEGACIÓN Y TEMA
+// ============================================================
+function cambiarTab(tab){currentTab=tab;render();}
+
+document.getElementById('themeBtn').addEventListener('click',function(){
+  document.body.classList.toggle('dark');
+  this.textContent=document.body.classList.contains('dark')?'☀️':'🌙';
+  localStorage.setItem('alsol_theme',document.body.classList.contains('dark')?'dark':'light');
+});
+if(localStorage.getItem('alsol_theme')==='dark'){document.body.classList.add('dark');document.getElementById('themeBtn').textContent='☀️';}
+
+document.querySelectorAll('.nav button').forEach(b=>{b.addEventListener('click',()=>{currentTab=b.dataset.tab;render()});});
+document.getElementById('searchBtn').addEventListener('click',abrirBuscador);
+document.getElementById('backupBtn').addEventListener('click',abrirRespaldo);
+
+// ─── INICIO ─────────────────────────────────────────────────────────────
+cargar().then(()=>{render();});
+</script>
+</body>
+</html>
